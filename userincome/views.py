@@ -20,7 +20,7 @@ def search_income(request):
         return JsonResponse(list(data), safe=False)
 
 
-@login_required(login_url='/authentication/login/')
+# @login_required(login_url='/authentication/login/')
 def index(request):
     sources = Source.objects.all()
     income = UserIncome.objects.filter(owner=request.user)
@@ -35,7 +35,7 @@ def index(request):
     }
     return render(request, 'income/index.html', context )
 
-@login_required
+# @login_required
 def add_income(request):
     sources = Source.objects.all()
     context = {
@@ -71,7 +71,7 @@ def add_income(request):
         messages.success(request, 'income saved successfully.')
         return redirect('income')
 
-@login_required
+# @login_required
 def income_edit(request, id):
     income = UserIncome.objects.get(pk=id)
     categories = Source.objects.all()

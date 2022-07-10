@@ -32,7 +32,7 @@ def search_expenses(request):
 
 
 
-@login_required(login_url='/authentication/login/')
+# @login_required(login_url='/authentication/login/')
 def index(request):
     categories = Category.objects.all()
     expenses = Expense.objects.filter(owner=request.user)
@@ -48,7 +48,7 @@ def index(request):
     }
     return render(request, 'expensesapp/index.html', context )
 
-@login_required
+# @login_required
 def add_expense(request):
     categories = Category.objects.all()
     context = {
@@ -84,7 +84,7 @@ def add_expense(request):
         messages.success(request, 'Expense saved successfully.')
         return redirect('expenses')
 
-@login_required
+# @login_required
 def expense_edit(request, id):
     expense = Expense.objects.get(pk=id)
     categories = Category.objects.all()
