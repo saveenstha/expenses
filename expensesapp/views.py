@@ -32,15 +32,17 @@ def search_expenses(request):
 
 
 
-# @login_required(login_url='/authentication/login/')
+@login_required(login_url='/authentication/login/')
 def index(request):
     categories = Category.objects.all()
     expenses = Expense.objects.filter(owner=request.user)
     paginator = Paginator(expenses, 3)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page( page_number)
-    currency = UserPreference.objects.get(user=request.user).currency
-    print(currency)
+    if UserPreference.objects.get(user=request.user).currency:
+        currency = UserPreference.objects.get(user=request.user).currency
+    else:
+        currency = None
     context = {
         'expenses': expenses,
         'page_obj': page_obj,
@@ -48,7 +50,7 @@ def index(request):
     }
     return render(request, 'expensesapp/index.html', context )
 
-# @login_required
+@login_required
 def add_expense(request):
     categories = Category.objects.all()
     context = {
@@ -84,7 +86,7 @@ def add_expense(request):
         messages.success(request, 'Expense saved successfully.')
         return redirect('expenses')
 
-# @login_required
+@login_required
 def expense_edit(request, id):
     expense = Expense.objects.get(pk=id)
     categories = Category.objects.all()
