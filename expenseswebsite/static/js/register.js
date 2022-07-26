@@ -2,6 +2,8 @@ const usernameField=document.querySelector("#usernameField");
 const feedBackArea=document.querySelector(".invalid_feedback");
 const emailField=document.querySelector("#emailField");
 const EmailFeedBackArea=document.querySelector(".emailFeedBackArea");
+const passwordField = document.querySelector("#passwordField");
+const usernameSuccessOutput = document.querySelector(".usernameSuccessOutput");
 const showPasswordToggle = document.querySelector(".showPasswordToggle");
 const submitBtn = document.querySelector(".submit-btn")
 
@@ -37,7 +39,7 @@ emailField.addEventListener('keyup',(e)=>{
                     submitBtn.disabled = true;
                     emailField.classList.add('is-invalid');
                     EmailFeedBackArea.style.display = "block";
-                    EmailFeedBackArea.innerHTML = '<p>${data.email_error}</p>';
+                    EmailFeedBackArea.innerHTML = `<p>${data.email_error}</p>`;
                 }else{
                     submitBtn.removeAttribute("disabled");
                 }
@@ -47,6 +49,10 @@ emailField.addEventListener('keyup',(e)=>{
 
 usernameField.addEventListener("keyup", (e) =>{
     const usernameVal = e.target.value;
+
+    usernameSuccessOutput.style.display = "block";
+    usernameSuccessOutput.textContent = `Checking  ${usernameVal}`;
+
     usernameField.classList.remove("is-invalid");
     feedBackArea.style.display="none";
     if (usernameVal.length > 0){
@@ -56,10 +62,11 @@ usernameField.addEventListener("keyup", (e) =>{
         })
         .then((res)=>res.json())
         .then((data)=>{
+            console.log("data", data);
             if(data.username_error){
                 usernameField.classList.add("is-invalid");
                 feedBackArea.style.display="block";
-                feedBackArea.innerHTML='<p>${data.username_error}</p>';
+                feedBackArea.innerHTML=`<p>${data.username_error}</p>`;
                 submitBtn.disabled = true;
             } else{
                 submitBtn.removeAttribute("disabled");
