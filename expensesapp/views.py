@@ -42,7 +42,7 @@ def index(request):
     try:
         currency = UserPreference.objects.get(user=request.user).currency
     except currency.DoesNotExist():
-        currency = None
+        currency = 'USD'
     context = {
         'expenses': expenses,
         'page_obj': page_obj,

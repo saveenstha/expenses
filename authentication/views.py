@@ -71,7 +71,7 @@ class RegistrationView(View):
                 # - encode uid
                 # - token
 
-                uidb64 = force_bytes(urlsafe_base64_encode(user.pk))
+                uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
                 domain = get_current_site(request).domain
                 link = reverse('activate', kwargs={'uidb64':uidb64, 'token': token_generator.make_token(user)})
                 activate_url = 'http://'+domain+link
