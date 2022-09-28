@@ -3,7 +3,7 @@
 
 
 {% block content %}
-    <h1>Add Expense</h1>
+    <h1>Add Income</h1>
     <div class="container mt-4">
 
         <nav aria-label="breadcrumb">
@@ -11,8 +11,10 @@
             <li class="breadcrumb-item"><a href="{% url 'income' %}">Income</a></li>
             <li class="breadcrumb-item active" aria-current="page">Add Income</li>
           </ol>
+        <div class="text-end rows-col-md-4">
+            <a href="{% url 'add-income-source' %}" class="btn btn-primary">Add New Source</a>
+        </div>
         </nav>
-
     </div>
     <div class="card-body">
         <form action="{% url 'add-income' %}" method="post">
@@ -39,7 +41,9 @@
                 <label for="">Date of Income</label>
                 <input type="date" class="form-control form-control-sm" name="income_date">
             </div>
-            <input type="submit" value="submit" class="btn btn-primary btn-primary-sm">
+            <div class="btn-group-lg ">
+                <input type="submit" value="Add Income" class="btn btn-primary btn-primary-sm">
+            </div>
         </form>
 
     </div>
