@@ -94,6 +94,22 @@ def add_expense(request):
         return redirect('expenses')
 
 @login_required
+def add_expense_category(request):
+    if request.method == 'GET':
+        return render(request, 'expensesapp/add_expense_category.html')
+
+    if request.method =='POST':
+        newcategory = request.POST['category'].upper()
+
+        if not Category.objects.filter(name=newcategory).exists():
+            Category.objects.create(name=newcategory)
+            messages.success(request, 'New category '+ str(newcategory) +' added.')
+        else:
+            messages.warning(request, 'Category '+ str(newcategory) +' already exists.')
+
+        return redirect('add-expenses-category')
+
+@login_required
 def expense_edit(request, id):
     expense = Expense.objects.get(pk=id)
     categories = Category.objects.all()

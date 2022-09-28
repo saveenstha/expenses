@@ -72,6 +72,22 @@ def add_income(request):
         return redirect('income')
 
 @login_required
+def add_income_source(request):
+    if request.method == 'GET':
+        return render(request, 'income/add_income_source.html')
+
+    if request.method == 'POST':
+        newsource = request.POST['source'].upper()
+
+        if not Source.objects.filter(name=newsource).exists():
+            Source.objects.create(name=newsource)
+            messages.success(request, 'New source ' + str(newsource) + ' added.')
+        else:
+            messages.warning(request, 'Source ' + str(newsource) + ' already exists.')
+
+        return redirect('add-income-source')
+
+@login_required
 def income_edit(request, id):
     income = UserIncome.objects.get(pk=id)
     categories = Source.objects.all()

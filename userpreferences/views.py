@@ -26,7 +26,6 @@ def index(request):
     else:
         currency = request.POST['currency']
         if exists:
-
             user_preferences.currency = currency
             user_preferences.save()
         else:
