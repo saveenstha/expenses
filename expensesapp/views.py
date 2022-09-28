@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.decorators import login_required
 from userpreferences.models import UserPreference
 from .models import Category, Expense
@@ -41,14 +42,20 @@ def index(request):
     page_obj = paginator.get_page( page_number)
     try:
         currency = UserPreference.objects.get(user=request.user).currency
-    except currency.DoesNotExist():
-        currency = 'USD'
+    except ObjectDoesNotExist:
+        currency = 'Select a Currency'
+        UserPreference.objects.create(user=request.user, currency=currency)
+    # if UserPreference.objects.get(user=request.user).currency.DoesNotExist:
+    #     currency = 'USD'
+    #     UserPreference.objects.create(user=request.user, currency=currency)
+    # else:
+    #     currency = UserPreference.objects.get(user=request.user).currency
     context = {
         'expenses': expenses,
         'page_obj': page_obj,
         'currency': currency,
     }
-    return render(request, 'expensesapp/index.html', context )
+    return render(request, 'expensesapp/index.html', context)
 
 @login_required
 def add_expense(request):

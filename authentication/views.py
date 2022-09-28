@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.core.exceptions import ObjectDoesNotExist
 from django.urls import reverse
 from django.views import View
 import json
@@ -33,7 +34,7 @@ class EmailValidationView(View):
         email = data['email']
 
         if not validate_email(email):
-            return JsonResponse({'email_error': 'Email is invalid'},status=400)
+            return JsonResponse({'email_error': 'Enter a valid Email address'},status=400)
         if User.objects.filter(email = email).exists():
             return JsonResponse({'email_error': 'Sorry email in use, choose another one'},status=409)
         return JsonResponse({'email_valid': True})
@@ -87,10 +88,12 @@ class RegistrationView(View):
                     [email],
 
                 )
-
-                email.send(fail_silently=False)
+                try:
+                    email.send(fail_silently=False)
+                except:
+                    pass
                 messages.success(request, 'Account successfully created')
-                return render(request, 'authentication/register.html')
+                return render(request, 'authentication/login.html')
         return render(request,'authentication/register.html')
 
 class VerificationView(View):
