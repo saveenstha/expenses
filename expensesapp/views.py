@@ -9,7 +9,7 @@ from django.http import JsonResponse, HttpResponse
 import json, datetime, csv, xlwt
 
 from django.template.loader import render_to_string
-from weasyprint import HTML
+# from weasyprint import HTML
 import tempfile, os
 from django.db.models import Sum
 
@@ -234,7 +234,7 @@ def export_pdf(request):
     expenses = Expense.objects.filter(owner=request.user)
     sum=expenses.aggregate(Sum('amount'))
     html_string = render_to_string('expensesapp/pdf-output.html', {'expenses': expenses, 'total': sum['amount__sum']})
-    html = HTML(string=html_string)
+    # html = HTML(string=html_string)
     result = html.write_pdf()
     with tempfile.NamedTemporaryFile(delete=True) as output:
         output.write(result)
