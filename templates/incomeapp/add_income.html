@@ -16,6 +16,7 @@
         </div>
         </nav>
     </div>
+    {% if sources.exists %}
     <div class="card-body">
         <form action="{% url 'add-income' %}" method="post">
             {% include 'partials/_messages.html' %}
@@ -47,6 +48,9 @@
         </form>
 
     </div>
+    {% else %}
+        <h3>Add a source first.</h3>
+    {% endif %}
 
 
 {% endblock %}

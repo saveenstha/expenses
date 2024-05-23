@@ -4,8 +4,10 @@ from django.core.paginator import Paginator
 from userpreferences.models import UserPreference
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-import json
+import json, datetime
+from .models import UserIncome
 from django.http import JsonResponse
+
 
 
 def search_income(request):
@@ -29,11 +31,11 @@ def index(request):
     page_obj = paginator.get_page( page_number)
     currency = UserPreference.objects.get(user=request.user).currency
     context = {
-        'income': income,
+        'incomeapp': income,
         'page_obj': page_obj,
         'currency': currency,
     }
-    return render(request, 'income/index.html', context )
+    return render(request, 'incomeapp/index.html', context)
 
 @login_required
 def add_income(request):
@@ -44,7 +46,7 @@ def add_income(request):
     }
     if request.method == 'GET':
 
-        return render(request, 'income/add_income.html', context)
+        return render(request, 'incomeapp/add_income.html', context)
 
     if request.method =='POST':
         amount=request.POST['amount']
@@ -55,26 +57,26 @@ def add_income(request):
 
         if not amount:
             messages.error(request, 'Amount is required.')
-            return render(request, 'income/add_income.html', context)
+            return render(request, 'incomeapp/add_income.html', context)
 
         if not description:
             messages.error(request, 'description is required.')
-            return render(request, 'income/add_income.html', context)
+            return render(request, 'incomeapp/add_income.html', context)
 
         if not date:
             messages.error(request, 'Date is required.')
-            return render(request, 'income/add_income.html', context)
+            return render(request, 'incomeapp/add_income.html', context)
 
         UserIncome.objects.create(amount=amount, date=date,owner=request.user,
                                source=source, description=description)
 
-        messages.success(request, 'income saved successfully.')
+        messages.success(request, 'incomeapp saved successfully.')
         return redirect('income')
 
 @login_required
 def add_income_source(request):
     if request.method == 'GET':
-        return render(request, 'income/add_income_source.html')
+        return render(request, 'incomeapp/add_income_source.html')
 
     if request.method == 'POST':
         newsource = request.POST['source'].upper()
@@ -94,12 +96,12 @@ def income_edit(request, id):
 
 
     context = {
-        'income': income,
+        'incomeapp': income,
         'values': income,
         'categories': categories
     }
     if request.method =='GET':
-        return render(request,'income/edit_income.html', context)
+        return render(request, 'incomeapp/edit_income.html', context)
 
     if request.method == 'POST':
         amount = request.POST['amount']
@@ -109,15 +111,15 @@ def income_edit(request, id):
 
         if not amount:
             messages.error(request, 'Amount is required.')
-            return render(request, 'income/edit_income.html', context)
+            return render(request, 'incomeapp/edit_income.html', context)
 
         if not description:
             messages.error(request, 'description is required.')
-            return render(request, 'income/edit_income.html', context)
+            return render(request, 'incomeapp/edit_income.html', context)
 
         if not date:
             messages.error(request, 'Date is required.')
-            return render(request, 'income/edit_income.html', context)
+            return render(request, 'incomeapp/edit_income.html', context)
 
         income.owner = request.user
         income.amount = amount
@@ -136,5 +138,32 @@ def delete_income(request, id):
     messages.success(request, 'Record Removed.')
     return redirect('income')
 
+def income_category_summary(request):
+    todays_date = datetime.date.today()
+    six_months_ago = todays_date - datetime.timedelta(days = 30*6)
+    income = UserIncome.objects.filter(owner=request.user,
+                                      date__gte=six_months_ago, date__lte=todays_date)
+    finalrep = {}
+
+    def get_source(income):
+        return income.source
+
+    source_list = list(set(map(get_source, income)))
+
+    def get_income_source_amount(source):
+        amount=0
+        filtered_by_source = income.filter(source=source)
+        for item in filtered_by_source:
+            amount += item.amount
+        return amount
+
+    for x in income:
+        for y in source_list:
+            finalrep[y] = get_income_source_amount(y)
+
+    return JsonResponse({'income_category_data': finalrep}, safe = False)
+
+def income_stats_view(request):
+    return  render(request, 'incomeapp/income-stats.html')
 
 

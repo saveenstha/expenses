@@ -1,1 +1,8 @@
 .env
+venv/
+**__pycache__/
+db.sqlite3
+
+*.log
+
+"youtube tutorial.txt"

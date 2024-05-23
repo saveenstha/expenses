@@ -17,6 +17,7 @@
         </nav>
 
     </div>
+    {% if categories.exists %}
     <div class="card-body">
         <form action="{% url 'add-expenses' %}" method="post">
             {% include 'partials/_messages.html' %}
@@ -46,6 +47,9 @@
         </form>
 
     </div>
+    {% else %}
+    <h3> Add a Category First. </h3>
+    {% endif %}
 
 
 {% endblock %}

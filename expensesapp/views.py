@@ -183,8 +183,8 @@ def expense_category_summary(request):
 
     return JsonResponse({'expense_category_data': finalrep}, safe = False)
 
-def stats_view(request):
-    return  render(request, 'expensesapp/stats.html')
+def expense_stats_view(request):
+    return  render(request, 'expensesapp/expense-stats.html')
 
 
 def export_csv(request):
