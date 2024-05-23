@@ -7,7 +7,7 @@
       "config": {
         "buildCommand": "pip install --upgrade pip && pip install -r requirements.txt",
         "maxLambdaSize": "15mb",
-        "runtime": "python3.9.6"
+        "runtime": "python3.9"
       }
     },
     {
