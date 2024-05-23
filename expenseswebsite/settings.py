@@ -31,7 +31,7 @@ SECRET_KEY = env('SECRET_KEY'),
 # SECRET_KEY='django-insecure-td=tm59=roge7xnz&-ps@o33(8#6e7mc*gbkn1$ye2wrq0x__w'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 # ALLOWED_HOSTS = ['127.0.0.1', 'https://saveensexpenseapp.herokuapp.com/']
 ALLOWED_HOSTS = ['.vercel.app', '.now.sh']
