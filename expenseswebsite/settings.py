@@ -28,10 +28,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = env('SECRET_KEY'),
-# SECRET_KEY='django-insecure-td=tm59=roge7xnz&-ps@o33(8#6e7mc*gbkn1$ye2wrq0x__w'
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
+
 
 # ALLOWED_HOSTS = ['127.0.0.1', 'https://saveensexpenseapp.herokuapp.com/']
 ALLOWED_HOSTS = ['.vercel.app', '.now.sh']
@@ -97,7 +98,14 @@ if DEBUG:
             'PORT': env('DB_PORT'),
         }
     }
-else:
+
+    STATIC_URL = 'static/'
+    STATICFILES_DIRS=[
+        BASE_DIR / 'expenseswebsite/static'
+    ]
+    STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+else: #for production
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
@@ -109,7 +117,11 @@ else:
         }
     }
 
-
+    # for vercel
+    STATIC_URL = 'static/'
+    STATICFILES_DIRS = os.path.join(BASE_DIR, 'static'),
+    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles_build', 'static')
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
@@ -145,17 +157,17 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
-STATIC_URL = 'static/'
-# STATICFILES_DIRS=[
-#     BASE_DIR / 'expenseswebsite/static'
-# ]
-# STATIC_ROOT = BASE_DIR / 'staticfiles'
-
-#for vercel
-STATICFILES_DIRS = os.path.join(BASE_DIR, 'static'),
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles_build', 'static')
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
-
+# STATIC_URL = 'static/'
+# # STATICFILES_DIRS=[
+# #     BASE_DIR / 'expenseswebsite/static'
+# # ]
+# # STATIC_ROOT = BASE_DIR / 'staticfiles'
+#
+# #for vercel
+# STATICFILES_DIRS = os.path.join(BASE_DIR, 'static'),
+# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles_build', 'static')
+# STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
+#
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
