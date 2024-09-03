@@ -22,9 +22,8 @@ environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 DEBUG = env('DEBUG')
 
 SECRET_KEY = env('SECRET_KEY')
-# SECRET_KEY = 'e^3_1uf=ap%88vq0__j^c^3t1ytx^t4t-)398nu^@#l5v-d4&0'
 
-ALLOWED_HOSTS = ['127.0.0.1', 'https://saveensexpenseapp.herokuapp.com/']
+ALLOWED_HOSTS = ['127.0.0.1', 'https://django-expensesapp.onrender.com/']
 
 # Application definition
 
