@@ -24,7 +24,6 @@ urlpatterns = [
     path('authentication/', include('authentication.urls')),
     path('preferences/', include('userpreferences.urls')),
     path('incomeapp/', include('incomeapp.urls')),
-    path('economics/', include('economicsapp.urls')),
 ]
 # add at the last
 urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
