@@ -1,6 +1,7 @@
 from pathlib import Path
 import environ
 import os
+import dj_database_url
 # import django_heroku
 from django.contrib import messages
 
@@ -94,19 +95,13 @@ if DEBUG:
 
 else: #for production
     DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': env('dbname'),
-            'USER': env('user'),
-            'PASSWORD': env('password'),
-            'HOST': env('host'),
-            'PORT': env('port'),
+        'default': dj_database_url.config(default=os.environ.get('DATABASE_URL'))
         }
     }
 
     # for vercel
     STATIC_URL = 'static/'
-    STATICFILES_DIRS = os.path.join(BASE_DIR, 'static'),
+    STATICFILES_DIRS = os.path.join(BASE_DIR, 'static')
     STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles_build', 'static')
     STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 
